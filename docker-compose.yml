@@ -1,0 +1,12 @@
+version: '3'
+services:
+  rabbitmq:
+    image: 'rabbitmq:3.8.2-management-alpine'
+    ports:
+      - '5671:5672'
+      - '15671:15672'
+    networks:
+      - fullstack
+networks:
+  fullstack:
+    driver: bridge

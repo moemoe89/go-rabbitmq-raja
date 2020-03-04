@@ -1,10 +1,16 @@
+//
+//  Practicing RabbitMQ
+//
+//  Copyright © 2016. All rights reserved.
+//
+
 package main
 
 import (
+	conf "github.com/moemoe89/practicing-rabbitmq-golang/consumer/config"
+
 	"encoding/json"
 	"log"
-
-	"github.com/streadway/amqp"
 )
 
 func failOnError(err error, msg string) {
@@ -18,8 +24,10 @@ type SM struct {
 }
 
 func main() {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
-	failOnError(err, "Failed to connect to RabbitMQ")
+	conn, err := conf.InitRabbitMQ()
+	if err != nil {
+		panic(err)
+	}
 	defer conn.Close()
 
 	ch, err := conn.Channel()
