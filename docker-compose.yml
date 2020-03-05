@@ -1,5 +1,29 @@
 version: '3'
 services:
+  consumer:
+    build: ./consumer
+    volumes:
+      - ./consumer:/go/src/github.com/moemoe89/practicing-rabbitmq-golang/consumer
+    container_name: practice_rabbitmq_consumer_app
+    restart: always
+    tty: true
+    depends_on:
+      - rabbitmq
+    networks:
+      - fullstack
+  producer:
+    build: ./producer
+    volumes:
+      - ./producer:/go/src/github.com/moemoe89/practicing-rabbitmq-golang/producer
+    container_name: practice_rabbitmq_producer_app
+    restart: always
+    ports:
+      - "8781:8781"
+    tty: true
+    depends_on:
+      - rabbitmq
+    networks:
+      - fullstack
   rabbitmq:
     image: 'rabbitmq:3.8.2-management-alpine'
     ports:

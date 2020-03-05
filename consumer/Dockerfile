@@ -1,13 +1,12 @@
-FROM golang:1.13 as builder
+FROM golang:latest
 
-WORKDIR /go/src/consumer
-COPY . .
+RUN mkdir -p /go/src/github.com/moemoe89/practicing-rabbitmq-golang/consumer
 
-RUN CGO_ENABLED=0 GOOS=linux go build -v -o app
+WORKDIR /go/src/github.com/moemoe89/practicing-rabbitmq-golang/consumer
 
-FROM alpine
-RUN apk add --no-cache ca-certificates
+COPY . /go/src/github.com/moemoe89/practicing-rabbitmq-golang/consumer
 
-COPY --from=builder /go/src/consumer/app /app
+RUN go mod download
+RUN go install
 
-CMD ["/app"]
+ENTRYPOINT /go/bin/consumer

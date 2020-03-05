@@ -11,30 +11,34 @@ import (
 
 	"encoding/json"
 	"log"
+	"net/http"
 
 	"github.com/streadway/amqp"
-
 )
-
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-	}
-}
 
 type SM struct {
 	Hello string `json:"string"`
 }
 
-func main() {
-	conn, err := conf.InitRabbitMQ()
-	if err != nil {
-		panic(err)
-	}
-	defer conn.Close()
+// server struct represent the delivery for controller
+type ctrl struct{
+	client *amqp.Connection
+}
 
-	ch, err := conn.Channel()
-	failOnError(err, "Failed to open a channel")
+// NewCtrl will create an object that represent the ctrl struct
+func NewCtrl(client *amqp.Connection) *ctrl {
+	return &ctrl{client}
+}
+
+func (c *ctrl) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	ch, err := c.client.Channel()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message": "`+err.Error()+`"}`))
+		return
+	}
 	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
@@ -45,15 +49,20 @@ func main() {
 		false,   // no-wait
 		nil,     // arguments
 	)
-	failOnError(err, "Failed to declare a queue")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message": "`+err.Error()+`"}`))
+		return
+	}
 
 	var sm SM
-
 	sm.Hello = "world"
 
 	body, err := json.Marshal(sm)
 	if err != nil {
-		panic(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message": "`+err.Error()+`"}`))
+		return
 	}
 
 	err = ch.Publish(
@@ -66,5 +75,20 @@ func main() {
 			Body:        []byte(body),
 		})
 	log.Printf(" [x] Sent %s", body)
-	failOnError(err, "Failed to publish a message")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"message": "Success sent message"}`))
+	return
+}
+
+func main() {
+	conn, err := conf.InitRabbitMQ()
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+
+	ctrl := NewCtrl(conn)
+
+	http.HandleFunc("/", ctrl.ServeHTTP)
+	log.Fatal(http.ListenAndServe(":"+conf.Configuration.Port, nil))
 }

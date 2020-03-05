@@ -66,8 +66,8 @@ Run producer / consumer inside dir :
 $ go run main.go
 ```
 
-## How to Run RabbitMQ with Docker
-Make config file for docker :
+## How to Run with Docker
+Make config file inside producer & consumer dir for docker :
 ```
 $ cp config-sample.json config.json
 ```
@@ -87,7 +87,7 @@ Stop
 ```
 $ docker-compose down
 ```
-Run producer / consumer inside dir :
+Trigger the message by opening this url on browser :
 ```
-$ go run main.go
+localhost:8781
 ```

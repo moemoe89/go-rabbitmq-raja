@@ -17,6 +17,7 @@ import (
 
 // ConfigurationModel represent the configuration model
 type ConfigurationModel struct {
+	Port string `json:"port"`
 	RabbitMQ struct {
 		Addr string `json:"addr"`
 	} `json:"rabbit_mq"`
