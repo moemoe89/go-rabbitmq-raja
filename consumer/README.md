@@ -1,4 +1,4 @@
-# PRACTICING-RABBITMQ-GOLANG #
+# GO-RABBITMQ-RAJA #
 
 Practicing RabbitMQ Using Golang with Go Mod as Programming Language, RabbitMQ as Messaging
 
@@ -9,13 +9,13 @@ Your project directory structure should look like this
   |
   +--+ src/github.com/moemoe89
   |  |
-  |  +--+ practicing-rabbitmq-golang/
+  |  +--+ go-rabbitmq-raja/
   |     |
   |     +--+ consumer
-  |        |
-  |        +--+ config/
-  |        +--+ main.go
-  |        +--+ ... any other source code
+  |     |  |
+  |     |  +--+ config/
+  |     |  +--+ main.go
+  |     |  +--+ ... any other source code
   |     +--+ producer
   |        |
   |        +--+ config/
@@ -45,7 +45,7 @@ Go >= 1.11
 $ mkdir -p src/github.com/moemoe89
 $ cd src/github.com/moemoe89
 $ git clone <url>
-$ mv <cloned directory> practicing-rabbitmq-golang
+$ mv <cloned directory> go-rabbitmq-raja
 ```
 
 ## Running Application

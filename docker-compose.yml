@@ -3,8 +3,8 @@ services:
   consumer:
     build: ./consumer
     volumes:
-      - ./consumer:/go/src/github.com/moemoe89/practicing-rabbitmq-golang/consumer
-    container_name: practice_rabbitmq_consumer_app
+      - ./consumer:/go/src/github.com/moemoe89/go-rabbitmq-raja/consumer
+    container_name: go_rabbitmq_raja_consumer
     restart: always
     tty: true
     depends_on:
@@ -14,8 +14,8 @@ services:
   producer:
     build: ./producer
     volumes:
-      - ./producer:/go/src/github.com/moemoe89/practicing-rabbitmq-golang/producer
-    container_name: practice_rabbitmq_producer_app
+      - ./producer:/go/src/github.com/moemoe89/go-rabbitmq-raja/producer
+    container_name: go_rabbitmq_raja_producer
     restart: always
     ports:
       - "8781:8781"

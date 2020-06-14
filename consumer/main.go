@@ -7,7 +7,7 @@
 package main
 
 import (
-	conf "github.com/moemoe89/practicing-rabbitmq-golang/consumer/config"
+	conf "github.com/moemoe89/go-rabbitmq-raja/consumer/config"
 
 	"encoding/json"
 	"log"

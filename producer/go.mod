@@ -1,4 +1,4 @@
-module github.com/moemoe89/practicing-rabbitmq-golang/producer
+module github.com/moemoe89/go-rabbitmq-raja/producer
 
 go 1.13
 

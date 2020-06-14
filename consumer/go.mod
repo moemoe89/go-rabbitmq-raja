@@ -1,4 +1,4 @@
-module github.com/moemoe89/practicing-rabbitmq-golang/consumer
+module github.com/moemoe89/go-rabbitmq-raja/consumer
 
 go 1.13
 
